@@ -13,4 +13,4 @@
 
 **Listes de valeurs autorisées** : Mes operations effecutés dans src/registre.js avec function (formaterOperation, listerOperations, trouverParId )semis, arrosage, désherbage, repiquage, récolte.
 
-**Sources** : SUJET.md, donnees/operations.json
+**Sources** : SUJET.md, donnees/operations.json, src/registre.js

@@ -24,6 +24,7 @@ export function listerOperations(operations) {
 
 // Renvoie l'opération qui a cet identifiant, ou undefined si elle n'existe pas.
 export function trouverParId(operations, id) {
+  return operations.find((op) => op.id === id);
   throw new Error('TODO : coder trouverParId dans src/registre.js');
 }
 
@@ -35,8 +36,28 @@ export function trouverParId(operations, id) {
 // obligatoires (n'importe quel texte non vide) · operation présente dans OPERATIONS
 // · coutFCFA nombre positif ou nul.
 export function verifierOperation(saisie, operations) {
-  throw new Error('TODO : coder verifierOperation dans src/registre.js');
-}
+  const erreurs = [];
+  if (!saisie.id || operations.some((op) => op.id === saisie.id)) {
+    erreurs.push ("Identifiant obligatoire et unique.");
+  }
+  if (!estDateValide (saisie.date)){
+    erreurs.push ("Date invalide");
+  }
+  if (!saisie.parcelle.trim()) {
+    erreurs.push ("Parcelle obligatoire.");
+  }
+  if (!saisie.culture.trim()) {
+  erreurs.push ("Culture obligatoire.");
+  }
+  if (!OPERATIONS.includes (saisie.operation)){
+    erreurs.push ("Type d\ opération invalide.");
+  }
+  const cout = versNombre (saisie.coutFCFA);
+  if (Number.isNaN(cout) || cout < 0) {
+    erreurs.push ("Coût invalide.");
+  }
+  return erreurs
+} 
 
 // Fabrique l'opération à enregistrer à partir d'une saisie VALIDE : coutFCFA devient un nombre.
 export function creerOperation(saisie) {

@@ -4,6 +4,6 @@
 
 | Ce que je cherchais | Où | Ce que j'ai compris | Utilisé dans |
 | --- | --- | --- | --- |
-| ✏️ | | | |
+| operation.some | mdn javascript, expliqué par M.Anglovia_membre du groupe 2 | .some verifie si un element dans le tableau satisfait la fonction du test fournie. sinon, il retourne .true/false |  src/registre.js avec la fonction verifierOperation |
 | ✏️ | | | |
 | ✏️ | | | |

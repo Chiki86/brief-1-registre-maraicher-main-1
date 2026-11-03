@@ -38,16 +38,16 @@ export function trouverParId(operations, id) {
 export function verifierOperation(saisie, operations) {
   const erreurs = [];
   if (!saisie.id || operations.some((op) => op.id === saisie.id)) {
-    erreurs.push ("Identifiant obligatoire et unique.");
+    erreurs.push ("Veuillez saisir un identifiant unique et non vide.");
   }
   if (!estDateValide (saisie.date)){
     erreurs.push ("Date invalide : format AAAA-MM-JJ attendu.");
   }
   if (!saisie.parcelle.trim()) {
-    erreurs.push ("Parcelle obligatoire.");
+    erreurs.push ("Veuillez renseigner la parcelle.");
   }
   if (!saisie.culture.trim()) {
-  erreurs.push ("Culture obligatoire.");
+  erreurs.push ("Veillez renseigner la culture.");
   }
   if (!OPERATIONS.includes(saisie.operation)){
     erreurs.push("Opération invalide. Entrez une opération de la liste fermée : semis,arrosage, désherbage, repiquage, récolte");

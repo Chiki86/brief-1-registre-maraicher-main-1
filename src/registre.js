@@ -41,7 +41,7 @@ export function verifierOperation(saisie, operations) {
     erreurs.push ("Identifiant obligatoire et unique.");
   }
   if (!estDateValide (saisie.date)){
-    erreurs.push ("Date invalide");
+    erreurs.push ("Date invalide : format AAAA-MM-JJ attendu.");
   }
   if (!saisie.parcelle.trim()) {
     erreurs.push ("Parcelle obligatoire.");
@@ -49,23 +49,35 @@ export function verifierOperation(saisie, operations) {
   if (!saisie.culture.trim()) {
   erreurs.push ("Culture obligatoire.");
   }
-  if (!OPERATIONS.includes (saisie.operation)){
-    erreurs.push ("Type d\ opération invalide.");
+  if (!OPERATIONS.includes(saisie.operation)){
+    erreurs.push("Opération invalide. Entrez une opération de la liste fermée : semis,arrosage, désherbage, repiquage, récolte");
   }
   const cout = versNombre (saisie.coutFCFA);
   if (Number.isNaN(cout) || cout < 0) {
-    erreurs.push ("Coût invalide.");
+    erreurs.push ("Le coût doit être un nombre positif ou nul en (FCFA)");
   }
-  return erreurs
+  return erreurs;
 } 
 
 // Fabrique l'opération à enregistrer à partir d'une saisie VALIDE : coutFCFA devient un nombre.
 export function creerOperation(saisie) {
-  throw new Error('TODO : coder creerOperation dans src/registre.js');
+  return {
+    id: saisie.id,
+    date: saisie.date,
+    parcelle: saisie.parcelle,
+    culture : saisie.culture,
+    operation: saisie.operation,
+    coutFCFA: versNombre(saisie.coutFCFA),
+  }; 
 }
 
 // Ajoute la saisie au registre si elle est valide (verifierOperation, puis creerOperation).
 // Renvoie les erreurs : [] si l'opération a été ajoutée ; sinon les messages, et rien n'est ajouté.
 export function ajouterOperation(operations, saisie) {
-  throw new Error('TODO : coder ajouterOperation dans src/registre.js');
+  const erreurs = verifierOperation (saisie,operations)
+  if (erreurs.length >0) {
+    return erreurs;
+  }
+  operations.push (creerOperation(saisie));
+  return [];
 }

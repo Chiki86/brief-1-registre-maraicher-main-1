@@ -9,10 +9,26 @@ import { filtrerParCulture, filtrerParParcelle, trierParCout, trierParDate } fro
 import { coutMinMax, syntheseParParcelle, totalCouts } from './src/synthese.js';
 
 const FICHIER_DONNEES = 'donnees/operations.json';
+async function afficherAccueil (operations) {
+  console.log ('=================================================');
+  console.log('   REGISTRE DES OPÉRATIONS MARAÎCHÈRES');
+  console.log('   Exploitation maraîchère pédagogique');
+  console.log('==================================================');
+  console.log(`${operations.length} opération(s) chargée(s) depuis ${FICHIER_DONNEES}.`);
+  console.log('');
+}
+function afficherMenu() {
+  console.log('--------------------- MENU ---------------------');
+  console.log('1. Ajouter une opération');
+  console.log('2. Lister les opérations');
+  console.log('3. Rechercher (identifiant, parcelle, culture)');
+  console.log('4. Trier (coût, date)');
+  console.log('5. Synthèse des dépenses');
+  console.log('0. Quitter');
+}
 
 async function main() {
   ouvrirSaisie();
-  console.log("À compléter : écrivez le menu dans app.js (fiches/3-ajouter-lister.md).");
   fermerSaisie();
 }
 

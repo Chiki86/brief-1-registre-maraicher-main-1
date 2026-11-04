@@ -1,7 +1,5 @@
 # Tableau des tâches
 
-> Planifiez vous-même, puis tenez le tableau à jour. Une preuve : un commit, un test vert, un document.
-
 | Tâche | Prévu | Fait le | Preuve |
 | --- | --- | --- | --- |
 | Poste et dépôt prêts ; besoin compris ; documents commencés | J1 | 02/11  |J'ai fait un git initial avec nouveau repository sur GitHub |
@@ -13,6 +11,14 @@
 | Tests par un camarade ; mes propres tests | | | |
 | Fiche agronomique ; README ; documents | | | |
 | Dépôt cloné et lancé ailleurs ; démonstration répétée | | | |
-| Bonus | | | |
+| Bonus |J3 | 04/11|J'ai testé les fonctions supprimerOperation, modifierOperation, trierParCoutDecroissant, parcelleLaPlusCouteuse et test npm run test:bonus (8 test) |
 
-**Blocages** (le message exact, ce que j'ai essayé, la solution) : ✏️
+
+**Blocages** (le message exact, ce que j'ai essayé, la solution) : Plusieurs failing tests après l'ajout de chaque fonction dans tout le travail. Par exemple dans src./bonus.js :
+
+  ** test at test\bonus.test.js:14:1
+ ✖ bonus : supprimerOperation retire O03 du registre et la renvoie (1.7662ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  undefined !== 'O03'**
+
+Pour repondre corriger ces erreurs, Javascript etant sensible à la casse, je reverifiais les petits points sensibles (virgule à la fin, orthographe, fermeture d'accolade ou singleton etc.)

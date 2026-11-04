@@ -46,4 +46,4 @@ Sous PowerShell, si `npm` est bloqué : `npm.cmd test`.
 
 ## Auteur
 
-✏️ *Prénom NOM, compte GitHub. Entraide : avec qui, sur quoi.*
+Prénom et nom : Bi Boti Jules Marc ZAMBLE | Compte GitHub : https://github.com/Marcboti. Entraide : avec qui, sur quoi.

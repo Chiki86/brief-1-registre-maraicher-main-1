@@ -72,8 +72,8 @@ Fichier : `donnees/operations.json`. 10 opérations (O01 à O10). Données ficti
 
 ## Auteur
 
+```
 Prénom et nom : Bi Boti Jules Marc ZAMBLE | Compte GitHub : https://github.com/Marcboti.
-
+```
+```
 Entraide : Cheick Tidiane SOUMAHORO | Objet : Explication des fonctions tableaux (find, filter), fonctions asynchrone (async, await) et opérateur ternaire (condition ? expressionSiVrai : expressionSiFaux) | compte GitHub : https://github.com/Chiki86
-
-

@@ -7,6 +7,7 @@ import { chargerJson, enregistrerJson } from './src/stockage.js';
 import { OPERATIONS, ajouterOperation, formaterOperation, listerOperations, trouverParId } from './src/registre.js';
 import { filtrerParCulture, filtrerParParcelle, trierParCout, trierParDate } from './src/recherche.js';
 import { coutMinMax, syntheseParParcelle, totalCouts } from './src/synthese.js';
+import { modifierOperation, parcelleLaPlusCouteuse, supprimerOperation, trierParCoutDecroissant } from './src/bonus.js';
 
 const FICHIER_DONNEES = 'donnees/operations.json';
 async function afficherAccueil (operations) {
@@ -19,7 +20,7 @@ async function afficherAccueil (operations) {
 }
 
 function afficherMenu() {
-  console.log('--------------------- MENU PRINCIPAL ---------------------');
+  console.log('----------------- MENU PRINCIPAL -----------------');
   console.log('1. Ajouter une opération');
   console.log('2. Lister les opérations');
   console.log('3. Rechercher (identifiant, parcelle, culture)');
@@ -31,8 +32,8 @@ function afficherMenu() {
 }
 
 async function actionAjouter(operations) {
-  console.log ('------ Ajout de nouvelle opération ------');
-  const id = await demander ('Identifiant (ex. O01');
+  console.log ('---Ajout de nouvelle opération---');
+  const id = await demander ('Identifiant (ex. O01) : ');
   if (id === null) return;
   const date = await demander ('Date (AAAA-MM-JJ) : ');
   if (date === null) return;
@@ -117,29 +118,33 @@ async function actionTrier(operations) {
 
 function actionSynthese(operations){
   console.log('--- Synthèse des dépenses enregistrées ---');
+  console.log('')
   console.log(`Opérations enregistrées : ${operations.length}`);
-   console.log(`Total des coûts : ${totalCouts(operations)} FCFA`);
+  console.log(`Total des coûts : ${totalCouts(operations)} FCFA`);
+  console.log('')
   console.log('Par parcelle : ');
-
+ 
   const synthese = syntheseParParcelle(operations);
-  for (const [parcelle, info] of object.entries(synthese)) {
+  for (const [parcelle, info] of Object.entries(synthese)) {
     console.log(`${parcelle} : ${info.nombre} opération(s), ${info.total} FCFA`);
   }
+  console.log('')
   const minMax = coutMinMax(operations);
   if (minMax === null) console.log('Coût minimum et maximum : aucune donnée');
   else console.log(`Coût minimum : ${minMax.min} FCFA · Coût maximum : ${minMax.max} FCFA`);
   
   const plusCouteuse = parcelleLaPlusCouteuse(operations);
   if (plusCouteuse !== null) {
-    console.log(`Parcelle la plus coûteuse : ${plusCouteuse.parcelle} (${plusCouteuse.total} FCFA)`);
+    console.log(`La parcelle la plus coûteuse est : ${plusCouteuse.parcelle} (${plusCouteuse.total} FCFA)`);
   }
+  console.log('')
   console.log('Attention: ces chiffres représentent uniquement les dépenses. Sans les revenus, ils ne reflètent pas la rentabilité de votre exploitation.');
 }
 
 async function actionSupprimer(operations) {
   const id = await demander ("Veuillez entrer l'identifiant à supprimer : ");
   if (id === null) return;
-  const supprimee = supprimersOperation(operations, id.toUpperCase());
+  const supprimee = supprimerOperation(operations, id.toUpperCase());
   if (supprimee === undefined) console.log(`Opération ${id.toUpperCase()} introuvable.`);
   else { await enregistrerJson(FICHIER_DONNEES, operations); console.log(`Opération ${supprimee.id} supprimée.`); }
 }
@@ -147,18 +152,51 @@ async function actionSupprimer(operations) {
 async function actionModifier(operations) {
   const id = await demander ("Veuillez entrer l'identifiant à modifier : ");
   if (id === null) return;
-  const parcelle = await demander('Veuillez entrer la parcelle à modifier : ');
-  if (parcelle === null) return;
+  const champ = await demander('Veuillez entrer le champ à modifier : ');
+  if (champ === null) return;
   const valeur = await demander('Veuillez entrer une nouvelle valeur : ');
   if (valeur === null) return;
-  const erreurs = modifierOperation(operations, id.toUpperCase(), parcelle, valeur);
-  if (erreurs.length > 0) { for (const e of erreurs) console.log(`  - ${e}`); }
+  const erreurs = modifierOperation(operations, id.toUpperCase(), champ, valeur);
+  if (erreurs.length > 0) { for (const e of erreurs) console.log(` - ${e}`); }
   else { await enregistrerJson(FICHIER_DONNEES, operations); console.log('Opération modifiée.');
  }
 }
 async function main() {
 ouvrirSaisie();
 let operations = [];
+try {
+    operations = await chargerJson(FICHIER_DONNEES);
+    afficherAccueil(operations);
+  } catch (erreur) {
+    console.log('==================================================');
+    console.log('   REGISTRE DES OPÉRATIONS MARAÎCHÈRES');
+    console.log('   Exploitation maraîchère pédagogique');
+    console.log('==================================================');
+    console.log(`Impossible de lire ${FICHIER_DONNEES} : ${erreur.message}. Le registre démarre vide.`);
+    console.log('');
+    operations = [];
+  }
 
-
+  while (true) {
+    afficherMenu();
+    const choix = await demander('Veuillez entrer votre choix : ');
+    if (choix === null) { console.log('Fermeture du registre. À bientôt !'); break; }
+    try {
+      if (choix === '1') await actionAjouter(operations);
+      else if (choix === '2') actionLister(operations);
+      else if (choix === '3') await actionRechercher(operations);
+      else if (choix === '4') await actionTrier(operations);
+      else if (choix === '5') actionSynthese(operations);
+      else if (choix === '6') await actionSupprimer(operations);
+      else if (choix === '7') await actionModifier(operations);
+      else if (choix === '0') { console.log('Fermeture du registre. À bientôt !'); break; }
+      else console.log(`Choix inconnu : « ${choix} ». Tapez un chiffre du menu.`);
+    } catch (erreur) {
+      if (erreur.message.startsWith('TODO')) console.log(`À compléter : ${erreur.message}`);
+      else console.log(`Erreur inattendue : ${erreur.message}`);
+    }
+  }
+  fermerSaisie();
 }
+
+main();

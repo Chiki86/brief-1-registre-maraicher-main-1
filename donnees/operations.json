@@ -78,5 +78,13 @@
     "culture": "aubergine",
     "operation": "désherbage",
     "coutFCFA": 6000
+  },
+  {
+    "id": "O011",
+    "date": "2026-11-05",
+    "parcelle": "P11",
+    "culture": "riz",
+    "operation": "semis",
+    "coutFCFA": 2000
   }
 ]

@@ -12,13 +12,12 @@
 | Fiche agronomique ; README ; documents | | | |
 | Dépôt cloné et lancé ailleurs ; démonstration répétée | | | |
 | Bonus |J3 | 04/11|J'ai testé les fonctions supprimerOperation, modifierOperation, trierParCoutDecroissant, parcelleLaPlusCouteuse et test npm run test:bonus (8 test) |
+| app.js : interface de menu | J4 | 05/11 (fin app.js) | app.js
 
+```## Blocages ```
 
-**Blocages** (le message exact, ce que j'ai essayé, la solution) : Plusieurs failing tests après l'ajout de chaque fonction dans tout le travail. Par exemple dans src./bonus.js :
-
-  ** test at test\bonus.test.js:14:1
- ✖ bonus : supprimerOperation retire O03 du registre et la renvoie (1.7662ms)
-  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
-  undefined !== 'O03'**
-
-Pour repondre corriger ces erreurs, Javascript etant sensible à la casse, je reverifiais les petits points sensibles (virgule à la fin, orthographe, fermeture d'accolade ou singleton etc.)
+| Message exact | Ce que j'ai essayé | Solution |
+| --- | --- | --- |
+| `supprimerOperation retire O03 du registre et la renvoie` → `undefined !== 'O03'` | Vérifier la fonction supprimerOperation | Corriger l'orthographe, les virgules et les accolades (JS sensible à la casse) |
+| `parcelle.toUppercase is not a function` | Vérifier la conversion en majuscules | Utiliser `toUpperCase()` avec parenthèses |
+| `main is not defined` | Lancer `node app.js` | Ajouter la déclaration `async function main()` avant l'appel |

@@ -10,6 +10,7 @@ import { coutMinMax, syntheseParParcelle, totalCouts } from './src/synthese.js';
 import { modifierOperation, parcelleLaPlusCouteuse, supprimerOperation, trierParCoutDecroissant } from './src/bonus.js';
 
 const FICHIER_DONNEES = 'donnees/operations.json';
+
 async function afficherAccueil (operations) {
   console.log ('=================================================');
   console.log('   REGISTRE DES OPÉRATIONS MARAÎCHÈRES');
@@ -76,7 +77,7 @@ async function actionRechercher(operations) {
   console.log('1. Par identifiant');
   console.log('2. Par parcelle');
   console.log('3. Les opérations d\'une culture');
-  const sousMenu = await demander ('Veuillez entrer votre choix');
+  const sousMenu = await demander ('Veuillez entrer votre choix : ');
   if (sousMenu === null) return;
   
   if (sousMenu === '1') {
@@ -107,7 +108,7 @@ async function actionTrier(operations) {
   console.log('1. Par coût croissant')
   console.log('2. Par coût décroissant');
   console.log('3. Par date, de la plus ancienne à la plus récente');
-  const sousMenu = await demander ('Veuillez entrer votre choix');
+  const sousMenu = await demander ('Veuillez entrer votre choix : ');
   if(sousMenu === null) return;
 
   if (sousMenu === '1') console.log(listerOperations(trierParCout(operations)));
@@ -146,19 +147,21 @@ async function actionSupprimer(operations) {
   if (id === null) return;
   const supprimee = supprimerOperation(operations, id.toUpperCase());
   if (supprimee === undefined) console.log(`Opération ${id.toUpperCase()} introuvable.`);
-  else { await enregistrerJson(FICHIER_DONNEES, operations); console.log(`Opération ${supprimee.id} supprimée.`); }
+  else { await enregistrerJson(FICHIER_DONNEES, operations); console.log(`Opération ${supprimee.id} supprimée avec succès.`); }
 }
 
 async function actionModifier(operations) {
-  const id = await demander ("Veuillez entrer l'identifiant à modifier : ");
+  const id = await demander('Identifiant à modifier (ex. O01) : ');
   if (id === null) return;
-  const champ = await demander('Veuillez entrer le champ à modifier : ');
+  const champ = await demander('Champ à modifier (date, parcelle, culture, operation, coutFCFA) : ');
   if (champ === null) return;
-  const valeur = await demander('Veuillez entrer une nouvelle valeur : ');
+  const valeur = await demander(`Veillez entrer une nouvelle valeur pour ${champ} : `);
   if (valeur === null) return;
   const erreurs = modifierOperation(operations, id.toUpperCase(), champ, valeur);
-  if (erreurs.length > 0) { for (const e of erreurs) console.log(` - ${e}`); }
-  else { await enregistrerJson(FICHIER_DONNEES, operations); console.log('Opération modifiée.');
+  if (erreurs.length > 0) {
+    console.log('Modification refusée :');
+    for (const e of erreurs) console.log(`  - ${e}`);
+  } else { await enregistrerJson(FICHIER_DONNEES, operations); console.log('Opération modifiée avec succès.');
  }
 }
 async function main() {
@@ -182,15 +185,18 @@ try {
     const choix = await demander('Veuillez entrer votre choix : ');
     if (choix === null) { console.log('Fermeture du registre. À bientôt !'); break; }
     try {
-      if (choix === '1') await actionAjouter(operations);
-      else if (choix === '2') actionLister(operations);
-      else if (choix === '3') await actionRechercher(operations);
-      else if (choix === '4') await actionTrier(operations);
-      else if (choix === '5') actionSynthese(operations);
-      else if (choix === '6') await actionSupprimer(operations);
-      else if (choix === '7') await actionModifier(operations);
-      else if (choix === '0') { console.log('Fermeture du registre. À bientôt !'); break; }
-      else console.log(`Choix inconnu : « ${choix} ». Tapez un chiffre du menu.`);
+      switch (choix) {
+      case '1' : await actionAjouter(operations); break;
+      case '2' : actionLister(operations); break;
+      case '3' : await actionRechercher(operations); break;
+      case '4' : await actionTrier(operations); break;
+      case '5' : actionSynthese(operations); break;
+      case '6' : await actionSupprimer(operations); break;
+      case '7': await actionModifier(operations); break;
+      case '0': console.log('Fermeture du registre. À bientôt !'); break;
+      default: console.log(`Choix inconnu. Tapez un chiffre du menu.`);
+      }
+      if (choix === '0') break;
     } catch (erreur) {
       if (erreur.message.startsWith('TODO')) console.log(`À compléter : ${erreur.message}`);
       else console.log(`Erreur inattendue : ${erreur.message}`);

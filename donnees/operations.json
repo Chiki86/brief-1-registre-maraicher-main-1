@@ -16,14 +16,6 @@
     "coutFCFA": 4500
   },
   {
-    "id": "O03",
-    "date": "2026-10-21",
-    "parcelle": "P1",
-    "culture": "tomate",
-    "operation": "arrosage",
-    "coutFCFA": 2000
-  },
-  {
     "id": "O04",
     "date": "2026-10-21",
     "parcelle": "P3",
@@ -83,8 +75,24 @@
     "id": "O011",
     "date": "2026-11-05",
     "parcelle": "P11",
-    "culture": "riz",
+    "culture": "gombo",
     "operation": "semis",
     "coutFCFA": 2000
+  },
+  {
+    "id": "O11",
+    "date": "2023-12-04",
+    "parcelle": "P1",
+    "culture": "sorgho",
+    "operation": "repiquage",
+    "coutFCFA": 0
+  },
+  {
+    "id": "DO12",
+    "date": "2026-08-31",
+    "parcelle": "P12",
+    "culture": "haricot",
+    "operation": "repiquage",
+    "coutFCFA": 17250
   }
 ]
